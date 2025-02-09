@@ -1,21 +1,21 @@
 package com.springboot.blog;
 
 import com.springboot.blog.entity.Post;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SpringbootBlogRestApiApplication {
 
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 	public static void main(String[] args) {
-
 		SpringApplication.run(SpringbootBlogRestApiApplication.class, args);
 
-//		System.out.println("The Application has been started.");
-//		Post post = new Post(1422387592, "Spring Boot Guide", "Introduction to Spring Boot", "Spring Boot makes Java development easy.");
-//		System.out.println(post.getId());
-//		System.out.println(post.getContent());
-//		System.out.println(post.getTitle());
 	}
 
 
