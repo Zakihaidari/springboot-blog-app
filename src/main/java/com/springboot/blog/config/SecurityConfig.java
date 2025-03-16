@@ -2,6 +2,8 @@ package com.springboot.blog.config;
 
 import com.springboot.blog.security.JwtAuthenticationEntryPoint;
 import com.springboot.blog.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,6 +27,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration  // Marks this class as a configuration class for Spring Security.
 @EnableMethodSecurity  // Enables method-level security (e.g., @PreAuthorize).
+@SecurityScheme(
+        name = "Bear Authentication",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+
+)
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -76,7 +85,9 @@ public class SecurityConfig {
         http.csrf().disable()  // Disable CSRF protection (not needed for REST APIs)
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()  // Public access for GET requests
-                                .requestMatchers("/api/auth/**").permitAll()  // Public access for authentication endpoints
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()  // Other requests require authentication
                 )
                 .exceptionHandling(exception -> exception

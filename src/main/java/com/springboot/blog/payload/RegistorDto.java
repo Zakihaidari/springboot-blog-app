@@ -1,19 +1,24 @@
 package com.springboot.blog.payload;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "User Registration Request Model")
 public class RegistorDto {
 
-    private String name;        // Full name of the user
-    private String username;    // Unique username for authentication
-    private String email;       // User email (must be unique)
-    private String password;    // Password (should be encrypted before saving)
+    @Schema(description = "Full name of the user")
+    private String name;
+
+    @Schema(description = "Unique username for authentication")
+    private String username;
+
+    @Schema(description = "User's email (must be unique)")
+    private String email;
+
+    @Schema(description = "Password (should be encrypted before saving)")
+    private String password;
 }
