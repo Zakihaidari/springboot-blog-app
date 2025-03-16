@@ -1,6 +1,7 @@
 package com.springboot.blog.controller;
 
 
+import com.springboot.blog.payload.JWTAuthResponse;
 import com.springboot.blog.payload.LoginDto;
 import com.springboot.blog.payload.RegistorDto;
 import com.springboot.blog.service.AuthService;
@@ -31,9 +32,12 @@ public class AuthController {
      * @return A response containing an authentication token or an error message.
      */
     @PostMapping(value = {"/login", "/signin"}) // Maps requests for login authentication
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto); // Calls the service to authenticate the user
-        return ResponseEntity.ok(response); // Returns the authentication response
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+        return ResponseEntity.ok(jwtAuthResponse); // Returns the authentication response
     }
 
 
