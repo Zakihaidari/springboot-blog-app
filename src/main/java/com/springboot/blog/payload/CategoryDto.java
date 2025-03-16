@@ -1,8 +1,11 @@
 package com.springboot.blog.payload;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class CategoryDto {
     private Long id;
     private String name;

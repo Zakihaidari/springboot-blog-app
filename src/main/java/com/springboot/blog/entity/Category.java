@@ -1,14 +1,15 @@
 package com.springboot.blog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -17,12 +18,12 @@ import java.util.Set;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
-    @SequenceGenerator(name = "category_seq", sequenceName = "category_sequence", initialValue = 10000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Post> posts;
 }
