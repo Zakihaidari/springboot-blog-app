@@ -1,10 +1,6 @@
-Sure! Here's the updated `README.md` content that assumes you are using Maven for building and running the project.
-
----
-
 # Spring Boot Blog Application
 
-This is a blog application built with **Spring Boot** that supports basic CRUD operations for **Posts**, **Categories**, and **Comments**. The application uses **JPA** for persistence, **ModelMapper** for DTO conversion, and handles **pagination** and **sorting**.
+This is a blog application built with **Spring Boot** that supports basic CRUD operations for **Posts**, **Categories**, and **Comments**. The application uses **JPA** for persistence and **ModelMapper** for mapping between entity and DTO objects.
 
 ## Features
 
@@ -37,8 +33,8 @@ Follow the steps below to get the application up and running on your local machi
 1. **Clone the Repository**:
 
     ```bash
-    git clone https://github.com/your-username/springboot-blog.git
-    cd springboot-blog
+    git clone https://github.com/Zakihaidari/springboot-blog-app.git
+    cd springboot-blog-app
     ```
 
 2. **Setup MySQL Database**:
@@ -93,11 +89,11 @@ Follow the steps below to get the application up and running on your local machi
 
 6. **Test API Endpoints**: You can test the API endpoints using **Postman** or any other API testing tool.
 
-### Example Request
+### Example Requests
 
 **Create a Post**:
 
-```bash
+```json
 POST /api/posts
 
 {
@@ -110,13 +106,13 @@ POST /api/posts
 
 **Get all Posts**:
 
-```bash
+```json
 GET /api/posts?pageNo=0&pageSize=10&sortBy=title&sortDir=asc
 ```
 
 **Create a Comment**:
 
-```bash
+```json
 POST /api/posts/{postId}/comments
 
 {
@@ -126,15 +122,82 @@ POST /api/posts/{postId}/comments
 }
 ```
 
-### Swagger UI (Optional)
+## JWT Authentication
 
-If you have integrated Swagger, you can access the Swagger UI documentation at:
+This application uses **JWT (JSON Web Token)** for authentication and authorization. The token is generated during the login process and should be included in the **Authorization** header for all subsequent requests.
 
-```
-http://localhost:8080/swagger-ui.html
-```
+### JWT Token Creation
 
-### Database Schema
+To authenticate and obtain a JWT token, use the following **Login** endpoint.
+
+**Login Endpoint**:
+
+- **URL**: `http://localhost:8080/api/auth/login`
+- **Method**: `POST`
+- **Body**:
+
+  ```json
+  {
+    "usernameOrEmail": "admin",
+    "password": "admin"
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnsImV4cCI6MTc0MjY5NDkyOX0.9NMGKv_JBSr8eKb-LZl732nJLSAfyr8uKFA4W0E2nRSjQeaQmfoYzeyVcJl6fuu0",
+    "tokenType": "Bearer"
+  }
+  ```
+
+### Using JWT Token for API Requests
+
+Once you have the JWT token from the login request, include it in the **Authorization** header for all subsequent API requests that require authentication.
+
+**Example: Creating a Post**:
+
+- **URL**: `http://localhost:8080/api/posts`
+- **Method**: `POST`
+- **Headers**:
+
+  ```http
+  Authorization: Bearer your_jwt_token_here
+  ```
+
+- **Body**:
+
+  ```json
+  {
+    "title": "New Post Title",
+    "description": "Description of the new post",
+    "content": "Content of the new post",
+    "categoryID": 1
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "id": 3,
+    "title": "New Post Title",
+    "description": "Description of the new post",
+    "content": "Content of the new post",
+    "category": {
+      "id": 1,
+      "name": "Technology"
+    }
+  }
+  ```
+
+#### Important:
+
+- In **Postman** or any API client, **select "Bearer Token"** in the **Authorization** tab and paste your JWT token in the field provided.
+- The token is included automatically in the **Authorization** header when making the API request.
+
+## Database Schema
 
 The following tables are used in the application:
 
@@ -188,87 +251,3 @@ mvn test
 3. Commit your changes (`git commit -m 'Add new feature'`).
 4. Push to your branch (`git push origin feature/your-feature`).
 5. Create a pull request.
-
-Sure! Below is the new section added to the `README.md` for handling **JWT token creation** and using it for subsequent requests.
-
----
-
-## JWT Authentication
-
-This application uses **JWT (JSON Web Token)** for authentication and authorization. The token is generated during the login process and should be included in the **Authorization** header for all subsequent requests that require authentication.
-
-### JWT Token Creation
-
-To authenticate and obtain a JWT token, use the following **Login** endpoint.
-
-#### Login Endpoint
-
-- **URL**: `http://localhost:8080/api/auth/login`
-- **Method**: `POST`
-- **Body**:
-
-    ```json
-    {
-      "usernameOrEmail": "admin",
-      "password": "admin"
-    }
-    ```
-
-- **Response**:
-
-    ```json
-   {
-    "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnsImV4cCI6MTc0MjY5NDkyOX0.9NMGKv_JBSr8eKb-LZl732nJLSAfyr8uKFA4W0E2nRSjQeaQmfoYzeyVcJl6fuu0",
-    "tokenType": "Bearer"
-}
-    ```
-Sure! Here is the specific section you requested:
-
----
-
-### Using JWT Token for API Requests
-
-Once you have the JWT token from the login request, include it in the **Authorization** header for all subsequent API requests that require authentication.
-
-#### Example: Creating a Post
-
-- **URL**: `http://localhost:8080/api/posts`
-- **Method**: `POST`
-- **Headers**:
-
-    ```http
-    Authorization: Bearer your_jwt_token_here
-    ```
-
-- **Body**:
-
-    ```json
-    {
-      "title": "New Post Title",
-      "description": "Description of the new post",
-      "content": "Content of the new post",
-      "categoryID": 1
-    }
-    ```
-
-- **Response**:
-
-    ```json
-    {
-      "id": 3,
-      "title": "New Post Title",
-      "description": "Description of the new post",
-      "content": "Content of the new post",
-      "category": {
-        "id": 1,
-        "name": "Technology"
-      }
-    }
-    ```
-
-#### Important:
-
-- In **Postman** or any API client, **select "Bearer Token"** in the **Authorization** tab and paste your JWT token in the field provided.
-- The token is included automatically in the **Authorization** header when making the API request.
-
-
